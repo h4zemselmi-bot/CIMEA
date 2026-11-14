@@ -3,7 +3,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
   <title>Consultation des captures CIMEA</title>
 
   <style>
@@ -17,30 +19,29 @@
 
     body {
       margin: 0;
-      background: #eff2f8;
+      background: #e9edf3;
       color: #233149;
       font-family: Arial, sans-serif;
     }
 
-    /* Barre supérieure discrète */
+    /* Barre discrète */
     header {
-      position: relative;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       flex-wrap: wrap;
       gap: 8px;
-      padding: 4px 12px;
+      padding: 6px 10px;
       background: white;
-      border-bottom: 1px solid #dbe2ed;
+      border-bottom: 1px solid #ddd;
     }
 
     .notice {
-      font-size: 11px;
-      color: #596474;
+      font-size: 10px;
+      color: #667085;
+      text-align: center;
     }
 
-    /* Contrôles de zoom */
     .controls {
       display: flex;
       align-items: center;
@@ -48,29 +49,33 @@
     }
 
     button {
-      padding: 4px 9px;
-      background: white;
-      border: 1px solid #c8d0df;
+      padding: 5px 10px;
+      border: 1px solid #ccc;
       border-radius: 6px;
+      background: white;
       cursor: pointer;
     }
 
     #zoom {
+      font-size: 11px;
       min-width: 45px;
       text-align: center;
-      font-size: 11px;
     }
 
-    /* Visionneuse */
+    /* Affichage portrait */
     .viewport {
       width: 100%;
+      min-height: 100vh;
       overflow-x: auto;
+      padding: 12px 0;
     }
 
     .sheet {
       width: 100%;
-      margin: auto;
+      max-width: 430px;
+      margin: 0 auto;
       background: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
     }
 
     .sheet img {
@@ -80,10 +85,20 @@
     }
 
     footer {
-      padding: 12px;
       text-align: center;
-      font-size: 11px;
-      color: #596474;
+      padding: 12px;
+      font-size: 10px;
+      color: #667085;
+    }
+
+    @media (max-width: 480px) {
+      .viewport {
+        padding: 0;
+      }
+
+      .sheet {
+        box-shadow: none;
+      }
     }
   </style>
 </head>
@@ -96,14 +111,15 @@
     </div>
 
     <div class="controls">
-      <button id="minus" type="button">−</button>
+      <button id="minus">−</button>
       <output id="zoom">100 %</output>
-      <button id="plus" type="button">+</button>
-      <button id="reset" type="button">Réinitialiser</button>
+      <button id="plus">+</button>
+      <button id="reset">Réinitialiser</button>
     </div>
   </header>
 
-  <main class="viewport">
+  <main class="viewport" id="viewport">
+
     <div class="sheet" id="sheet">
 
       <img
@@ -117,6 +133,7 @@
       >
 
     </div>
+
   </main>
 
   <footer>
@@ -126,6 +143,7 @@
 
   <script>
     const sheet = document.getElementById("sheet");
+    const viewport = document.getElementById("viewport");
     const zoom = document.getElementById("zoom");
 
     let scale = 1;
@@ -136,23 +154,33 @@
         Math.min(2.5, Math.round(value * 10) / 10)
       );
 
-      sheet.style.width = (scale * 100) + "%";
+      const baseWidth = Math.min(
+        430,
+        viewport.clientWidth
+      );
+
+      sheet.style.maxWidth = "none";
+      sheet.style.width =
+        Math.round(baseWidth * scale) + "px";
 
       zoom.textContent =
         Math.round(scale * 100) + " %";
     }
 
-    document.getElementById("plus").onclick = () => {
-      setZoom(scale + 0.2);
-    };
+    document.getElementById("plus").onclick =
+      () => setZoom(scale + 0.2);
 
-    document.getElementById("minus").onclick = () => {
-      setZoom(scale - 0.2);
-    };
+    document.getElementById("minus").onclick =
+      () => setZoom(scale - 0.2);
 
-    document.getElementById("reset").onclick = () => {
-      setZoom(1);
-    };
+    document.getElementById("reset").onclick =
+      () => setZoom(1);
+
+    window.addEventListener("resize",
+      () => setZoom(scale)
+    );
+
+    setZoom(1);
   </script>
 
 </body>
