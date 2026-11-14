@@ -70,36 +70,27 @@
       padding: 12px 0;
     }
 
-    .sheet {
-      width: 100%;
-      max-width: 430px;
-      margin: 0 auto;
-      background: white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
-    }
+   
+.sheet {
+  width: min(100%, 430px) !important;
+  max-width: 430px !important;
+  margin: 0 auto !important;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+}
 
-    .sheet img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
+.sheet img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 
-    footer {
-      text-align: center;
-      padding: 12px;
-      font-size: 10px;
-      color: #667085;
-    }
+.viewport {
+  width: 100%;
+  overflow-x: auto;
+  padding: 12px 0;
+}
 
-    @media (max-width: 480px) {
-      .viewport {
-        padding: 0;
-      }
-
-      .sheet {
-        box-shadow: none;
-      }
-    }
   </style>
 </head>
 
